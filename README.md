@@ -8,7 +8,7 @@ version 0.0001
 
 # SYNOPSIS
 
-[Dancer::Plugin::StatsD](http://search.cpan.org/perldoc?Dancer::Plugin::StatsD) is a [Dancer](http://search.cpan.org/perldoc?Dancer) plugin that lets you log events and
+[Dancer::Plugin::StatsD](https://metacpan.org/pod/Dancer::Plugin::StatsD) is a [Dancer](https://metacpan.org/pod/Dancer) plugin that lets you log events and
 track times using `StatsD`.
 
     use Dancer;
@@ -17,19 +17,19 @@ track times using `StatsD`.
 
     hook before_error_renden => sub {
         my ($err) = @_;
-        increment( 'errors.' . $err->code );
+        statsd->increment( 'errors.' . $err->code );
     };
 
     get '/' => sub {
         # Increment the homepage hits counter
-        increment( 'hits.homepage' );
+        statsd->increment( 'hits.homepage' );
 
         my $t1 = time;
 
         # Do something that takes a while
 
         # Log the time taken in ms
-        timing( 'something.slow', (time - $t1) / 1000 );
+        statsd->timing( 'something.slow', (time - $t1) / 1000 );
     };
 
     dance;

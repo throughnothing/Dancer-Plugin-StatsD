@@ -25,10 +25,6 @@ sub statsd_obj {
 }
 
 register statsd    => sub { statsd_obj };
-register increment => sub { statsd_obj->increment( @_ ) };
-register decrement => sub { statsd_obj->decrement( @_ ) };
-register update    => sub { statsd_obj->update( @_ ) };
-register timing    => sub { statsd_obj->timing( @_ ) };
 
 register_plugin;
 
@@ -45,19 +41,19 @@ track times using C<StatsD>.
 
     hook before_error_renden => sub {
         my ($err) = @_;
-        increment( 'errors.' . $err->code );
+        statsd->increment( 'errors.' . $err->code );
     };
 
     get '/' => sub {
         # Increment the homepage hits counter
-        increment( 'hits.homepage' );
+        statsd->increment( 'hits.homepage' );
 
         my $t1 = time;
 
         # Do something that takes a while
 
         # Log the time taken in ms
-        timing( 'something.slow', (time - $t1) / 1000 );
+        statsd->timing( 'something.slow', (time - $t1) / 1000 );
     };
 
     dance;
