@@ -15,7 +15,7 @@ track times using `StatsD`.
     use Dancer::Plugin::StatsD qw( statsd increment decrement update timing );
     use Time::HiRes qw( time );
 
-    hook before_error_renden => sub {
+    hook before_error_render => sub {
         my ($err) = @_;
         statsd->increment( 'errors.' . $err->code );
     };
@@ -29,7 +29,7 @@ track times using `StatsD`.
         # Do something that takes a while
 
         # Log the time taken in ms
-        statsd->timing( 'something.slow', (time - $t1) / 1000 );
+        statsd->timing( 'something.slow', (time - $t1) * 1000 );
     };
 
     dance;
